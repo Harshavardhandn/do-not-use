@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Calendar, DollarSign, ChevronDown, ChevronUp, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 interface ProjectCardProps {
+  id: number;
   title: string;
   description: string;
   budget: number;
@@ -14,6 +16,7 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({
+  id,
   title,
   description,
   budget,
@@ -24,6 +27,11 @@ export function ProjectCard({
   clientFeedback,
 }: ProjectCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const navigate = useNavigate();
+
+  const handleViewFreelancers = () => {
+    navigate(`/project/${id}/freelancers`);
+  };
 
   return (
     <div className="bg-card rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
@@ -58,17 +66,26 @@ export function ProjectCard({
         </div>
       </div>
 
-      <button
-        onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center justify-center gap-2 text-secondary hover:text-secondary/80 transition-colors"
-      >
-        {isExpanded ? "Show Less" : "View Details"}
-        {isExpanded ? (
-          <ChevronUp className="w-4 h-4" />
-        ) : (
-          <ChevronDown className="w-4 h-4" />
-        )}
-      </button>
+      <div className="flex gap-2">
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="flex-1 flex items-center justify-center gap-2 text-secondary hover:text-secondary/80 transition-colors"
+        >
+          {isExpanded ? "Show Less" : "View Details"}
+          {isExpanded ? (
+            <ChevronUp className="w-4 h-4" />
+          ) : (
+            <ChevronDown className="w-4 h-4" />
+          )}
+        </button>
+        
+        <button
+          onClick={handleViewFreelancers}
+          className="flex-1 bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors"
+        >
+          View Freelancers
+        </button>
+      </div>
 
       <div
         className={cn(
